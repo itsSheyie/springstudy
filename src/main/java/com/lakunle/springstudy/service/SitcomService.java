@@ -1,73 +1,78 @@
 package com.lakunle.springstudy.service;
 
 import com.lakunle.springstudy.model.Sitcom;
-import com.lakunle.springstudy.repository.SitcomDatabase;
+import com.lakunle.springstudy.repository.SitcomRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 public class SitcomService {
-    private final SitcomDatabase sitcomDatabase;
+    private SitcomRepository sitcomRepository;
 
-
-
-    public SitcomService(SitcomDatabase sitcomDatabase){
-        this.sitcomDatabase = sitcomDatabase;
-
+    public SitcomService(SitcomRepository sitcomRepository){
+        this.sitcomRepository = sitcomRepository;
     }
 
     public String saveSitcom(Sitcom sitcom){
-        if(sitcomDatabase.saveSitcom(sitcom)){
-            return "Saved!";
-        }
-        return "Already Exist";
+        if(sitcomRepository.existsByNameAndReleaseYearAndProducer(
+                sitcom.getName(),
+                sitcom.getReleaseYear(),
+                sitcom.getProducer()
+        ))return "Already Exists";
+
+        sitcomRepository.save(sitcom);
+        return "Saved!";
     }
 
     public List<String> getSitcomNames(){
-        return sitcomDatabase.getSitcomNames();
+        return sitcomRepository.findAll()
+                .stream()
+                .map(Sitcom::getName)
+                .toList();
     }
 
     public List<Sitcom> getSitcomByProducer(String producer){
-        return sitcomDatabase.getSitcomByProducer(producer);
+        return sitcomRepository.findByProducer(producer);
     }
 
     public Optional<Sitcom> getByName(String name){
-        return sitcomDatabase.getSitcomByName(name);
+        return sitcomRepository.findByName(name);
     }
 
-    public List<Sitcom> getSitcomInYear(int year){
-        return sitcomDatabase.getSitcomByYear(year);
+    public List<Sitcom> getSitcomByYear(int year){
+        return sitcomRepository.findByReleaseYear(year);
     }
 
-    public List<Sitcom> getAllSitcoms(){
-        return sitcomDatabase.getSitcoms();
+    public List<Sitcom> getAllSitcom(){
+        return sitcomRepository.findAll();
     }
+
 
     public String deleteSitcom(String name, int releaseYear, String producer){
-        if(sitcomDatabase.removeSitcom(name, producer, releaseYear)){
-            return name + " Removed!";
-        }else
-            return "Does not exists";
+        return sitcomRepository.findByNameAndReleaseYearAndProducer(name, releaseYear, producer)
+                .map( s -> {
+                    sitcomRepository.delete(s);
+                    return name + " Removed ";
+                }).orElse( " Does not exists");
+
     }
 
     public String watchSitcom(String name){
-        return sitcomDatabase.getSitcomByName(name).map(
-                s -> {
-                    s.setWatchCount(s.getWatchCount() + 1);
-                    return name + " has been watched " + s.getWatchCount() + " times";
-                }).orElse("Sitcom not found");
-
-
+        return sitcomRepository.findByName(name)
+                .map(s -> {
+                            s.setWatchCount(s.getWatchCount() + 1);
+                            sitcomRepository.save(s);
+                            return name + " has been watched " + s.getWatchCount() + " times";
+                }).orElse("Does not exist");
     }
 
-
-
-
     public Optional<Sitcom> mostWatchedSitcom(){
-        return sitcomDatabase.getSitcoms()
-                .stream().max(Comparator.comparingInt(Sitcom::getWatchCount));
+        return sitcomRepository.findAll()
+                .stream()
+                .max(Comparator.comparingInt(Sitcom::getWatchCount));
     }
 }

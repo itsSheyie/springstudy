@@ -1,16 +1,28 @@
 package com.lakunle.springstudy.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Sitcom {
 
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
 
     private String producer;
     private int releaseYear;
-    private int totalSeasons;
+    private Integer totalSeasons;
     private int watchCount = 0;
 
-    public Sitcom (String name, int releaseYear, int totalSeasons, String producer){
+    public Sitcom(){
+
+    }
+
+    public Sitcom (String name, int releaseYear, Integer totalSeasons, String producer){
         this.name = name;
         this.releaseYear = releaseYear;
         this.totalSeasons = totalSeasons;
@@ -25,11 +37,11 @@ public class Sitcom {
         this.producer = producer;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -49,7 +61,7 @@ public class Sitcom {
         this.releaseYear = releaseYear;
     }
 
-    public int getTotalSeasons() {
+    public Integer getTotalSeasons() {
         return totalSeasons;
     }
 

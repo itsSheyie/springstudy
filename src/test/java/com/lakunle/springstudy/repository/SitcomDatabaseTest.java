@@ -8,12 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SitcomDatabaseTest {
-    private SitcomDatabase sitcomDatabase;
+    private SitcomRepository sitcomDatabase;
     private Sitcom sitcom;
 
     @BeforeEach
     void setUp(){
-        sitcomDatabase = new SitcomDatabase();
+        sitcomDatabase = new SitcomRepository();
         sitcom = new Sitcom("Seinfeld", 1994, 6, "Jerry Seinfeld");
     }
 

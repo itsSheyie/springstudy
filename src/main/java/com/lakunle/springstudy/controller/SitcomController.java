@@ -24,7 +24,7 @@ public class SitcomController {
 
     @GetMapping()
     public ResponseEntity<List<Sitcom>> allSitcom(){
-        return ResponseEntity.ok(sitcomService.getAllSitcoms());
+        return ResponseEntity.ok(sitcomService.getAllSitcom());
     }
 
     @GetMapping("/name/{name}")
@@ -36,7 +36,7 @@ public class SitcomController {
 
     @GetMapping("/year/{year}")
     public ResponseEntity<List<Sitcom>> getSitcomByYear(@PathVariable int year){
-        return ResponseEntity.ok(sitcomService.getSitcomInYear(year));
+        return ResponseEntity.ok(sitcomService.getSitcomByYear(year));
     }
 
     @GetMapping("/watch/{name}")
@@ -45,7 +45,7 @@ public class SitcomController {
     }
 
     @DeleteMapping("/{name}")
-    public ResponseEntity<String> deleteSitcom(@PathVariable String name, @RequestParam String producer, @RequestParam int year){
-        return ResponseEntity.ok(sitcomService.deleteSitcom(name, year, producer));
+    public ResponseEntity<String> deleteSitcom(@PathVariable String name, @RequestParam int releaseYear,  @RequestParam String producer){
+        return ResponseEntity.ok(sitcomService.deleteSitcom(name, releaseYear, producer));
     }
 }

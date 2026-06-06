@@ -1,7 +1,7 @@
 package com.lakunle.springstudy.service;
 
 import com.lakunle.springstudy.model.Sitcom;
-import com.lakunle.springstudy.repository.SitcomDatabase;
+import com.lakunle.springstudy.repository.SitcomRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 class SitcomServiceTest {
 
     @Mock
-    private SitcomDatabase sitcomDatabase;
+    private SitcomRepository sitcomDatabase;
 
     @InjectMocks
     private SitcomService sitcomService;
