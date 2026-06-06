@@ -2,6 +2,7 @@ package com.lakunle.springstudy.controller;
 
 import com.lakunle.springstudy.model.Sitcom;
 import com.lakunle.springstudy.service.SitcomService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class SitcomController {
     }
 
     @PostMapping
-    public ResponseEntity<String> saveSitcom(@RequestBody Sitcom sitcom){
+    public ResponseEntity<String> saveSitcom(@Valid @RequestBody Sitcom sitcom){
         return ResponseEntity.ok(sitcomService.saveSitcom(sitcom));
     }
 
